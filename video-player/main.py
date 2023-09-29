@@ -7,7 +7,7 @@ app = FastAPI()
 @app.post("/upload/")
 async def upload_video(file: UploadFile):
     # Define the path to the "videos" folder
-    videos_folder = os.path.join("video-player", "videos")
+    videos_folder = os.path.join("videos")
     
     # Ensure the "videos" folder exists; create it if it doesn't.
     os.makedirs(videos_folder, exist_ok=True)
@@ -29,3 +29,21 @@ async def render_video_player(video_filename: str, request: Request):
         template = html_file.read()
         rendered_template = template.replace("{{ video_url }}", video_url)
         return rendered_template
+    
+@app.get("/videos/", response_class=HTMLResponse)
+async def list_videos(request: Request):
+    # Define the path to the "videos" folder
+    videos_folder = os.path.join("videos")
+
+    # List all video files in the "videos" folder
+    video_files = os.listdir(videos_folder)
+    
+    # Construct video URLs for all video files
+    base_url = request.base_url
+    video_urls = [f"{base_url}videos/{filename}" for filename in video_files]
+
+    # Render the HTML page with a list of video URLs
+    with open("../video_list.html", "r") as html_file:
+        template = html_file.read()
+        rendered_template = template.replace("{{ video_urls }}", "\n".join(video_urls))
+        return rendered_template  
