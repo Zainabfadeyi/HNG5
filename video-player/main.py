@@ -35,11 +35,11 @@ async def render_video_player(video_filename: str, request: Request):
     base_url = request.base_url
     video_url = f"{base_url}videos/{video_filename}"  # Updated URL path
 
-    # # Render the HTML page with the video player.
-    # with open("../index.html", "r") as html_file:
-    #     template = html_file.read()
-    #     rendered_template = template.replace("{{ video_url }}", video_url)
-    #     return rendered_template
+    # Render the HTML page with the video player.
+    with open("../index.html", "r") as html_file:
+        template = html_file.read()
+        rendered_template = template.replace("{{ video_url }}", video_url)
+        return rendered_template
 
 @app.get("/videos/", response_class=HTMLResponse)
 async def list_videos(request: Request):
@@ -53,11 +53,11 @@ async def list_videos(request: Request):
     base_url = request.base_url
     video_urls = [f"{base_url}videos/{filename}" for filename in video_files]
 
-    # # Render the HTML page with a list of video URLs
-    # with open("../video_list.html", "r") as html_file:
-    #     template = html_file.read()
-    #     rendered_template = template.replace("{{ video_urls }}", "\n".join(video_urls))
-    #     return rendered_template
+    # Render the HTML page with a list of video URLs
+    with open("../video_list.html", "r") as html_file:
+        template = html_file.read()
+        rendered_template = template.replace("{{ video_urls }}", "\n".join(video_urls))
+        return rendered_template
 
 @app.delete("/delete_video/{video_filename}")
 async def delete_video(video_filename: str):
